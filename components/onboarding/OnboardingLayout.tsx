@@ -6,14 +6,14 @@ interface OnboardingLayoutProps {
 
 export function OnboardingLayout({ children }: OnboardingLayoutProps) {
   return (
-    <div className="min-h-screen flex">
+    <div className="h-screen flex overflow-hidden">
       {/* 왼쪽 온보딩 영역 - 데스크탑만 표시 */}
-      <div className="hidden lg:flex lg:w-2/5 relative bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 overflow-hidden">
+      <div className="hidden lg:flex lg:w-2/5 relative bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
         {/* 배경 이미지 오버레이 - 나중에 이미지 추가 가능 */}
         <div className="absolute inset-0 bg-black/20" />
 
         {/* 컨텐츠 */}
-        <div className="relative z-10 flex flex-col justify-between p-12 text-white">
+        <div className="relative z-10 flex flex-col justify-between p-12 text-white h-full">
           {/* 상단 로고 */}
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-white/20 rounded-lg backdrop-blur-sm flex items-center justify-center">
@@ -43,9 +43,9 @@ export function OnboardingLayout({ children }: OnboardingLayoutProps) {
       </div>
 
       {/* 오른쪽 폼 영역 */}
-      <div className="flex-1 flex flex-col bg-background">
+      <div className="flex-1 flex flex-col bg-background h-screen overflow-y-auto">
         {/* 모바일 로고 - 태블릿 이하에서만 표시 */}
-        <div className="lg:hidden p-6 border-b">
+        <div className="lg:hidden p-6 border-b sticky top-0 bg-background z-10">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
               <span className="text-xl">📞</span>

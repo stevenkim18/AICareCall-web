@@ -116,7 +116,7 @@ export function Step1GuardianInfo({ onNext }: Step1GuardianInfoProps) {
   const canProceed = form.formState.isValid && isVerified;
 
   return (
-    <Card>
+    <Card className="animate-in fade-in slide-in-from-top-2 duration-200">
       <CardHeader>
         <CardTitle className="text-2xl">1. 보호자 정보</CardTitle>
         <CardDescription>

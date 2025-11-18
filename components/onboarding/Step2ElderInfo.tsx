@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -47,6 +46,24 @@ const formSchema = z.object({
   healthInfo: z.string()
     .min(1, '건강 정보를 입력해주세요')
     .max(500, '최대 500자까지 입력 가능합니다'),
+}).refine((data) => {
+  // relationship이 'other'일 때 relationshipOther가 필수
+  if (data.relationship === 'other' && !data.relationshipOther?.trim()) {
+    return false;
+  }
+  return true;
+}, {
+  message: '관계를 입력해주세요',
+  path: ['relationshipOther'],
+}).refine((data) => {
+  // livingArrangement가 'other'일 때 livingArrangementOther가 필수
+  if (data.livingArrangement === 'other' && !data.livingArrangementOther?.trim()) {
+    return false;
+  }
+  return true;
+}, {
+  message: '거주 형태를 입력해주세요',
+  path: ['livingArrangementOther'],
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -76,6 +93,9 @@ export function Step2ElderInfo({ onNext, onPrev }: Step2ElderInfoProps) {
   const watchLivingArrangement = form.watch('livingArrangement');
   const watchHealthInfo = form.watch('healthInfo');
 
+  // 폼이 유효한지 확인 (모든 필수 항목 입력 + 유효성 검사 통과)
+  const isFormValid = form.formState.isValid;
+
   // 전화번호 자동 포맷팅
   const formatPhoneNumber = (value: string) => {
     const numbers = value.replace(/\D/g, '');
@@ -89,7 +109,7 @@ export function Step2ElderInfo({ onNext, onPrev }: Step2ElderInfoProps) {
   };
 
   return (
-    <Card>
+    <Card className="animate-in fade-in slide-in-from-top-2 duration-200">
       <CardHeader>
         <CardTitle className="text-2xl">2. 어르신 정보</CardTitle>
         <CardDescription>
@@ -343,7 +363,7 @@ export function Step2ElderInfo({ onNext, onPrev }: Step2ElderInfoProps) {
               <Button type="button" variant="outline" onClick={onPrev}>
                 이전
               </Button>
-              <Button type="submit" size="lg" className="min-w-32">
+              <Button type="submit" size="lg" className="min-w-32" disabled={!isFormValid}>
                 다음
               </Button>
             </div>

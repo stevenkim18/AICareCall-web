@@ -113,26 +113,29 @@ export function Step3CallSettings({ onNext, onPrev }: Step3CallSettingsProps) {
   const watchCallFrequency = form.watch('callFrequency');
   const watchHasEndDate = form.watch('hasEndDate');
   const watchRepeatDays = form.watch('repeatDays');
+  const watchCallTimes = form.watch('callTimes');
+
+  // 폼이 유효한지 확인 (모든 필수 항목 입력 + 유효성 검사 통과)
+  const isFormValid = form.formState.isValid;
 
   // 통화 횟수 변경 시 callTimes 배열 조정
   React.useEffect(() => {
     const frequency = parseInt(watchCallFrequency);
-    const currentTimes = form.getValues('callTimes');
+    const currentTimes = watchCallTimes || [];
 
-    if (currentTimes.length < frequency) {
-      // 부족하면 추가 (기본값: 09:00, 13:00, 19:00)
-      const defaultTimes = ['09:00', '13:00', '19:00'];
-      const newTimes = [...currentTimes];
-      while (newTimes.length < frequency) {
-        const index = newTimes.length;
-        newTimes.push(defaultTimes[index] || '09:00');
+    // 기본 시간 배열
+    const defaultTimes = ['09:00', '13:00', '19:00'];
+
+    // 현재 배열 길이와 필요한 길이가 다르면 조정
+    if (currentTimes.length !== frequency) {
+      const newTimes: string[] = [];
+      for (let i = 0; i < frequency; i++) {
+        // 기존 값이 있으면 유지, 없으면 기본값 사용
+        newTimes.push(currentTimes[i] || defaultTimes[i] || '09:00');
       }
-      form.setValue('callTimes', newTimes);
-    } else if (currentTimes.length > frequency) {
-      // 많으면 자르기
-      form.setValue('callTimes', currentTimes.slice(0, frequency));
+      form.setValue('callTimes', newTimes, { shouldValidate: true });
     }
-  }, [watchCallFrequency, form]);
+  }, [watchCallFrequency, watchCallTimes?.length]);
 
   const onSubmit = (data: FormData) => {
     onNext(data);
@@ -141,14 +144,14 @@ export function Step3CallSettings({ onNext, onPrev }: Step3CallSettingsProps) {
   const toggleWeekday = (day: string) => {
     const current = form.getValues('repeatDays');
     if (current.includes(day)) {
-      form.setValue('repeatDays', current.filter(d => d !== day));
+      form.setValue('repeatDays', current.filter(d => d !== day), { shouldValidate: true });
     } else {
-      form.setValue('repeatDays', [...current, day]);
+      form.setValue('repeatDays', [...current, day], { shouldValidate: true });
     }
   };
 
   return (
-    <Card>
+    <Card className="animate-in fade-in slide-in-from-top-2 duration-200">
       <CardHeader>
         <CardTitle className="text-2xl">3. 통화 설정</CardTitle>
         <CardDescription>
@@ -229,7 +232,11 @@ export function Step3CallSettings({ onNext, onPrev }: Step3CallSettingsProps) {
                         <FormLabel>
                           {parseInt(watchCallFrequency) > 1 ? `${index + 1}번째 통화 시간` : '통화 시간'}
                         </FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="시간 선택" />
@@ -359,7 +366,7 @@ export function Step3CallSettings({ onNext, onPrev }: Step3CallSettingsProps) {
                       onCheckedChange={(checked) => {
                         field.onChange(!checked);
                         if (checked) {
-                          form.setValue('endDate', undefined);
+                          form.setValue('endDate', undefined, { shouldValidate: true });
                         }
                       }}
                     />
@@ -414,7 +421,7 @@ export function Step3CallSettings({ onNext, onPrev }: Step3CallSettingsProps) {
               <Button type="button" variant="outline" onClick={onPrev}>
                 이전
               </Button>
-              <Button type="submit" size="lg" className="min-w-32">
+              <Button type="submit" size="lg" className="min-w-32" disabled={!isFormValid}>
                 다음
               </Button>
             </div>
