@@ -8,6 +8,9 @@ import { CallListV3_Timeline } from '../components/CallListV3_Timeline';
 import { VersionSelector } from '../components/VersionSelector';
 import { callList } from '../shared/data';
 
+// Force dynamic rendering to use useSearchParams
+export const dynamic = 'force-dynamic';
+
 // 전체 통화 기록 페이지 - 여러 버전 지원
 export default function CallsPage() {
   const router = useRouter();
@@ -41,8 +44,8 @@ export default function CallsPage() {
                 <button
                   onClick={() => router.push('/calls?view=card')}
                   className={`px-4 py-2 rounded-md text-sm font-bold transition-all ${viewMode === 'card'
-                      ? 'bg-violet-600 text-white shadow-md'
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                    ? 'bg-violet-600 text-white shadow-md'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                     }`}
                 >
                   카드
@@ -50,8 +53,8 @@ export default function CallsPage() {
                 <button
                   onClick={() => router.push('/calls?view=timeline')}
                   className={`px-4 py-2 rounded-md text-sm font-bold transition-all ${viewMode === 'timeline'
-                      ? 'bg-violet-600 text-white shadow-md'
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                    ? 'bg-violet-600 text-white shadow-md'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                     }`}
                 >
                   타임라인
