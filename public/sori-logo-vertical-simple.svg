@@ -1,0 +1,52 @@
+<svg width="400" height="600" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="frameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E2E8F0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F1F5F9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E2E8F0;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22D3EE;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
+    </linearGradient>
+    
+    <style>
+      @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+      .brand-text {
+        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 96px;
+        letter-spacing: -0.02em;
+      }
+    </style>
+  </defs>
+  
+  <!-- 전체를 중앙 정렬 -->
+  <g transform="translate(50, 100)">
+    <!-- 심볼 (위쪽) -->
+    <g>
+      <!-- 외부 프레임 -->
+      <rect x="0" y="0" width="300" height="300" rx="84" fill="url(#frameGradient)"/>
+      
+      <!-- 흰색 중간층 -->
+      <rect x="10.5" y="10.5" width="279" height="279" rx="75" fill="white"/>
+      
+      <!-- 내부 블루 바디 -->
+      <rect x="22.5" y="22.5" width="255" height="255" rx="66" fill="url(#bodyGradient)"/>
+      
+      <!-- 눈 그룹 -->
+      <g>
+        <!-- 왼쪽 눈 -->
+        <rect x="39" y="117" width="90" height="66" rx="25.2" fill="white"/>
+        
+        <!-- 오른쪽 눈 -->
+        <rect x="171" y="117" width="90" height="66" rx="25.2" fill="white"/>
+      </g>
+    </g>
+    
+    <!-- "Sori AI" 텍스트 (아래쪽 중앙, 약간 위로) - Pretendard, 검은색 -->
+    <text x="150" y="400" text-anchor="middle" class="brand-text" fill="#000000" dominant-baseline="middle">Sori AI</text>
+  </g>
+</svg>

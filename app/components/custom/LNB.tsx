@@ -17,27 +17,19 @@ export function LNB() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
       ),
-      path: '/dashboard'
+      path: '/dashboard',
+      soon: false
     },
     {
-      id: 'chat',
-      label: '실시간 대화',
+      id: 'call-history',
+      label: '전체 통화 기록',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      path: '/chat'
-    },
-    {
-      id: 'report',
-      label: '온기 리포트',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      ),
-      path: '/report'
+      path: '/call-history',
+      soon: false
     },
     {
       id: 'settings',
@@ -48,7 +40,30 @@ export function LNB() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      path: '/settings'
+      path: '/settings',
+      soon: false
+    },
+    {
+      id: 'chat',
+      label: '실시간 대화',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+      ),
+      path: '/chat',
+      soon: true
+    },
+    {
+      id: 'report',
+      label: '온기 리포트',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+      path: '/report',
+      soon: true
     }
   ];
 
@@ -61,7 +76,10 @@ export function LNB() {
           className="flex items-center gap-3 group"
         >
           <SoriLogo size={36} />
-          <span className="text-2xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">Sori</span>
+          <div className="flex items-center gap-1">
+            <span className="text-2xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">Sori</span>
+            <span className="text-sm font-black text-violet-600 bg-violet-100 px-1.5 py-0.5 rounded">AI</span>
+          </div>
         </button>
       </div>
 
@@ -72,15 +90,22 @@ export function LNB() {
           return (
             <button
               key={item.id}
-              onClick={() => router.push(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                isActive
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-              }`}
+              onClick={() => !item.soon && router.push(item.path)}
+              disabled={item.soon}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105'
+                : item.soon
+                  ? 'text-slate-400 cursor-not-allowed opacity-60'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer'
+                }`}
             >
               {item.icon}
-              <span className="text-sm font-bold">{item.label}</span>
+              <span className="text-sm font-bold flex-1 text-left">{item.label}</span>
+              {item.soon && (
+                <span className="text-[10px] font-bold bg-blue-500 text-white px-2 py-0.5 rounded-md">
+                  SOON
+                </span>
+              )}
             </button>
           );
         })}
@@ -99,4 +124,3 @@ export function LNB() {
     </aside>
   );
 }
-

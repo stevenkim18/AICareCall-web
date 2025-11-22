@@ -1,0 +1,51 @@
+<svg width="800" height="300" viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333EA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Symbol (Left Side) -->
+  <g transform="translate(30, 0)">
+    <!-- Main Circle -->
+    <circle cx="150" cy="150" r="120" fill="url(#logo-gradient)"/>
+    
+    <!-- Friendly Face -->
+    <!-- Left Eye -->
+    <circle cx="120" cy="130" r="12" fill="white"/>
+    <circle cx="123" cy="128" r="7" fill="#1F2937"/>
+    
+    <!-- Right Eye -->
+    <circle cx="180" cy="130" r="12" fill="white"/>
+    <circle cx="183" cy="128" r="7" fill="#1F2937"/>
+    
+    <!-- Smile -->
+    <path d="M 110 165 Q 150 200 190 165" stroke="white" stroke-width="10" fill="none" stroke-linecap="round"/>
+    
+    <!-- Sound Wave Accents -->
+    <path d="M 70 110 Q 62 130 70 150" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M 230 110 Q 238 130 230 150" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.6"/>
+  </g>
+  
+  <!-- Text "소리" (Right Side) -->
+  <g transform="translate(340, 150)">
+    <!-- 소 (So) -->
+    <g transform="translate(0, 0)">
+      <rect x="10" y="-60" width="80" height="10" fill="url(#logo-gradient)"/>
+      <rect x="10" y="-60" width="10" height="100" fill="url(#logo-gradient)"/>
+      <rect x="80" y="-60" width="10" height="100" fill="url(#logo-gradient)"/>
+      <rect x="10" y="30" width="80" height="10" fill="url(#logo-gradient)"/>
+      <circle cx="50" cy="-10" r="25" stroke="url(#logo-gradient)" stroke-width="10" fill="none"/>
+    </g>
+    
+    <!-- 리 (Ri) -->
+    <g transform="translate(140, 0)">
+      <rect x="10" y="-60" width="10" height="100" fill="url(#logo-gradient)"/>
+      <rect x="50" y="-60" width="10" height="100" fill="url(#logo-gradient)"/>
+      <path d="M 20 -20 L 50 -20" stroke="url(#logo-gradient)" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="80" cy="-10" r="20" stroke="url(#logo-gradient)" stroke-width="10" fill="none"/>
+    </g>
+  </g>
+</svg>

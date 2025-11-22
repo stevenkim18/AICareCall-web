@@ -15,8 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { StepCard } from "./StepCard";
 import type { FirstStepProps, GuardianInfoData } from "@/types/onboarding";
 import { formatTimer } from "@/lib/onboarding-helpers";
 
@@ -48,217 +46,188 @@ export function Step1GuardianInfo({ onNext }: FirstStepProps) {
 
   const emailValue = form.watch("email");
 
-  // 타이머 관리
   useEffect(() => {
     if (timer > 0 && !isVerified) {
-      const interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
+      const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
       return () => clearInterval(interval);
     }
   }, [timer, isVerified]);
 
-  // 이메일 유효성 검사 (디바운스 1초)
   useEffect(() => {
-    // 이메일 입력 시작 시 즉시 에러 메시지 숨김
     setShowEmailError(false);
-
     const debounceTimer = setTimeout(() => {
       if (!emailValue || emailValue.trim() === "") {
         setIsEmailValid(false);
         return;
       }
-
       const emailValidation = z.string().email().safeParse(emailValue);
       setIsEmailValid(emailValidation.success);
       setShowEmailError(!emailValidation.success);
     }, 1000);
-
     return () => clearTimeout(debounceTimer);
   }, [emailValue]);
 
   const handleSendVerification = async () => {
     const email = form.getValues("email");
     const emailValidation = z.string().email().safeParse(email);
-
     if (!emailValidation.success) {
       form.setError("email", { message: "올바른 이메일 형식이 아닙니다" });
       return;
     }
-
-    // TODO: 실제 API 호출
     console.log("인증번호 발송:", email);
     setEmailSent(true);
-    setTimer(10 * 60); // 10분
+    setTimer(10 * 60);
     setVerificationAttempted(false);
   };
 
   const handleVerifyCode = async () => {
     const code = form.getValues("verificationCode");
-
     if (!code || code.length !== 6) {
-      form.setError("verificationCode", {
-        message: "6자리 인증번호를 입력해주세요",
-      });
+      form.setError("verificationCode", { message: "6자리 인증번호를 입력해주세요" });
       return;
     }
-
-    // TODO: 실제 API 호출
     console.log("인증번호 확인:", code);
     if (code === "123456") {
       setIsVerified(true);
       setTimer(0);
     } else {
       setVerificationAttempted(true);
-      form.setError("verificationCode", {
-        message: "인증번호가 일치하지 않습니다",
-      });
+      form.setError("verificationCode", { message: "인증번호가 일치하지 않습니다" });
     }
   };
 
   const onSubmit = (data: GuardianInfoData) => {
-    if (!isVerified) {
-      return;
-    }
+    if (!isVerified) return;
     onNext(data);
   };
 
   const canProceed = form.formState.isValid && isVerified;
 
   return (
-    <StepCard
-      stepNumber={1}
-      title="보호자 정보"
-      description="지금 서비스를 사용하고자 하는 분의 정보를 입력해주세요."
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  이름 <span className="text-destructive">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="예) 김민수"
-                    {...field}
-                    disabled={isVerified}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <div className="w-full max-w-2xl mx-auto">
+      <div className="mb-6">
+        <h2 className="text-2xl font-black text-slate-900 mb-2">반가워요!</h2>
+        <p className="text-sm text-slate-600 font-semibold">먼저 보호자님의 정보를 알려주세요</p>
+      </div>
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  이메일 <span className="text-destructive">*</span>
-                </FormLabel>
-                <div className="flex gap-2">
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="example@email.com"
-                      {...field}
-                      disabled={isVerified}
-                      className={cn(isVerified && "opacity-60")}
-                    />
-                  </FormControl>
-                  <Button
-                    type="button"
-                    variant={emailSent ? "outline" : "default"}
-                    onClick={handleSendVerification}
-                    disabled={
-                      !isEmailValid ||
-                      isVerified ||
-                      (emailSent && !verificationAttempted)
-                    }
-                    className="whitespace-nowrap"
-                  >
-                    {emailSent ? "재발송" : "인증번호 받기"}
-                  </Button>
-                </div>
-                <FormMessage />
-                {showEmailError && !isVerified && (
-                  <p className="text-sm text-destructive mt-2">
-                    올바른 이메일 형식이 아닙니다
-                  </p>
-                )}
-                {emailSent && !isVerified && (
-                  <p className="text-sm text-primary flex items-center gap-1 mt-2">
-                    <Mail className="w-4 h-4" />
-                    인증번호가 발송되었습니다
-                  </p>
-                )}
-                {isVerified && (
-                  <p className="text-sm text-green-600 flex items-center gap-1 mt-2 font-medium">
-                    <Check className="w-4 h-4" />
-                    이메일 인증 완료
-                  </p>
-                )}
-              </FormItem>
-            )}
-          />
-
-          {emailSent && !isVerified && (
+      <div className="bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
-              name="verificationCode"
+              name="name"
               render={({ field }) => (
-                <FormItem className="animate-in fade-in slide-in-from-top-2 duration-200">
-                  <FormLabel>
-                    인증번호 <span className="text-destructive">*</span>
+                <FormItem>
+                  <FormLabel className="text-sm font-bold text-slate-900">
+                    이름 <span className="text-red-500">*</span>
                   </FormLabel>
-                  <div className="flex gap-2">
-                    <FormControl>
-                      <Input
-                        placeholder="6자리 숫자"
-                        maxLength={6}
-                        {...field}
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, "");
-                          field.onChange(value);
-                        }}
-                      />
-                    </FormControl>
-                    <Button
-                      type="button"
-                      onClick={handleVerifyCode}
-                      className="whitespace-nowrap"
-                    >
-                      확인
-                    </Button>
-                  </div>
-                  <FormMessage />
-                  {timer > 0 && (
-                    <p className="text-sm text-muted-foreground mt-2">
-                      남은 시간 {formatTimer(timer)}
-                    </p>
-                  )}
+                  <FormControl>
+                    <Input
+                      placeholder="예) 김민수"
+                      {...field}
+                      disabled={isVerified}
+                      className="h-12 text-sm border-2 border-slate-300 focus:border-violet-500 rounded-xl font-medium"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs font-semibold" />
                 </FormItem>
               )}
             />
-          )}
 
-          <div className="flex justify-end pt-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-bold text-slate-900">
+                    이메일 <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <div className="flex gap-2">
+                    <FormControl>
+                      <div className="flex-1 relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <Input
+                          type="email"
+                          placeholder="email@example.com"
+                          {...field}
+                          disabled={isVerified}
+                          className="h-12 pl-10 text-sm border-2 border-slate-300 focus:border-violet-500 rounded-xl font-medium"
+                        />
+                        {isEmailValid && !emailSent && (
+                          <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500" />
+                        )}
+                      </div>
+                    </FormControl>
+                    <Button
+                      type="button"
+                      onClick={handleSendVerification}
+                      disabled={!isEmailValid || emailSent || isVerified}
+                      className="h-12 px-5 font-bold text-sm bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 rounded-xl disabled:opacity-50"
+                    >
+                      {emailSent ? "발송완료" : "인증받기"}
+                    </Button>
+                  </div>
+                  <FormMessage className="text-xs font-semibold" />
+                </FormItem>
+              )}
+            />
+
+            {emailSent && !isVerified && (
+              <FormField
+                control={form.control}
+                name="verificationCode"
+                render={({ field }) => (
+                  <FormItem className="animate-in fade-in slide-in-from-top-1 duration-200">
+                    <FormLabel className="text-sm font-bold text-slate-900">
+                      인증번호 <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input
+                          placeholder="6자리 숫자"
+                          maxLength={6}
+                          {...field}
+                          className="flex-1 h-12 text-sm border-2 border-slate-300 focus:border-violet-500 rounded-xl font-medium"
+                        />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        onClick={handleVerifyCode}
+                        className="h-12 px-5 font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl"
+                      >
+                        확인
+                      </Button>
+                    </div>
+                    {timer > 0 && (
+                      <p className="text-xs font-semibold text-amber-600">
+                        {formatTimer(timer)} 후 만료
+                      </p>
+                    )}
+                    <FormMessage className="text-xs font-semibold" />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {isVerified && (
+              <div className="p-4 bg-emerald-50 border-2 border-emerald-500 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
+                <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <p className="text-sm font-black text-emerald-900">이메일 인증 완료!</p>
+              </div>
+            )}
+
             <Button
               type="submit"
               disabled={!canProceed}
-              size="lg"
-              className="min-w-32"
+              className="w-full h-12 text-sm font-black bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-6"
             >
               다음
             </Button>
-          </div>
-        </form>
-      </Form>
-    </StepCard>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 }

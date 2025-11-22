@@ -86,7 +86,7 @@ export default function LandingPage() {
                 매일을 채웁니다.
               </h1>
 
-              <p
+              <div
                 className={`text-balance max-w-4xl text-[clamp(1.05rem,2vw,1.35rem)] font-semibold leading-relaxed transition-all delay-300 duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                   }`}
                 style={{
@@ -102,7 +102,7 @@ export default function LandingPage() {
                   <span className="font-bold" style={{ color: '#2563eb', fontSize: '0.95em' }}>소리</span>
                 </span>{' '}
                 가 깊은 공감으로 연결합니다.
-              </p>
+              </div>
             </div>
 
             {/* 3D 오브젝트 - 중앙 고정 */}
@@ -206,9 +206,9 @@ export default function LandingPage() {
 
         {/* Footer */}
         <footer className="flex flex-col items-center gap-4 px-5 py-6 text-center">
-          <p className="text-sm font-medium text-muted-foreground">
+          <div className="text-sm font-medium text-muted-foreground">
             © 2025 Sori AI. All rights reserved.
-          </p>
+          </div>
         </footer>
       </div>
     </div>

@@ -1,0 +1,51 @@
+<svg width="400" height="600" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="vertical-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333EA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Symbol (Top) -->
+  <g transform="translate(200, 150)">
+    <!-- Main Circle -->
+    <circle cx="0" cy="0" r="120" fill="url(#vertical-gradient)"/>
+    
+    <!-- Friendly Face -->
+    <!-- Left Eye -->
+    <circle cx="-30" cy="-20" r="12" fill="white"/>
+    <circle cx="-27" cy="-22" r="7" fill="#1F2937"/>
+    
+    <!-- Right Eye -->
+    <circle cx="30" cy="-20" r="12" fill="white"/>
+    <circle cx="33" cy="-22" r="7" fill="#1F2937"/>
+    
+    <!-- Smile -->
+    <path d="M -40 15 Q 0 55 40 15" stroke="white" stroke-width="10" fill="none" stroke-linecap="round"/>
+    
+    <!-- Sound Wave Accents -->
+    <path d="M -80 -40 Q -88 -20 -80 0" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M 80 -40 Q 88 -20 80 0" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.6"/>
+  </g>
+  
+  <!-- Text "소리" (Bottom, Centered) -->
+  <g transform="translate(200, 450)">
+    <!-- 소 (So) -->
+    <g transform="translate(-80, 0)">
+      <rect x="-40" y="-60" width="80" height="10" fill="url(#vertical-gradient)"/>
+      <rect x="-40" y="-60" width="10" height="100" fill="url(#vertical-gradient)"/>
+      <rect x="30" y="-60" width="10" height="100" fill="url(#vertical-gradient)"/>
+      <rect x="-40" y="30" width="80" height="10" fill="url(#vertical-gradient)"/>
+      <circle cx="0" cy="-10" r="25" stroke="url(#vertical-gradient)" stroke-width="10" fill="none"/>
+    </g>
+    
+    <!-- 리 (Ri) -->
+    <g transform="translate(60, 0)">
+      <rect x="-40" y="-60" width="10" height="100" fill="url(#vertical-gradient)"/>
+      <rect x="0" y="-60" width="10" height="100" fill="url(#vertical-gradient)"/>
+      <path d="M -30 -20 L 0 -20" stroke="url(#vertical-gradient)" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="30" cy="-10" r="20" stroke="url(#vertical-gradient)" stroke-width="10" fill="none"/>
+    </g>
+  </g>
+</svg>

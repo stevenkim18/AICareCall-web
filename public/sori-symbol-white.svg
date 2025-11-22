@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main Circle - White Version -->
+  <circle cx="256" cy="256" r="220" fill="white"/>
+  
+  <!-- Friendly Face -->
+  <!-- Left Eye -->
+  <circle cx="200" cy="220" r="20" fill="#1F2937"/>
+  <circle cx="205" cy="218" r="12" fill="white"/>
+  
+  <!-- Right Eye -->
+  <circle cx="312" cy="220" r="20" fill="#1F2937"/>
+  <circle cx="317" cy="218" r="12" fill="white"/>
+  
+  <!-- Smile -->
+  <path d="M 180 280 Q 256 340 332 280" stroke="#1F2937" stroke-width="16" fill="none" stroke-linecap="round"/>
+  
+  <!-- Sound Wave Accents -->
+  <path d="M 100 180 Q 90 200 100 220" stroke="#1F2937" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.6"/>
+  <path d="M 412 180 Q 422 200 412 220" stroke="#1F2937" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.6"/>
+  
+  <path d="M 70 160 Q 55 200 70 240" stroke="#1F2937" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <path d="M 442 160 Q 457 200 442 240" stroke="#1F2937" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.4"/>
+</svg>
