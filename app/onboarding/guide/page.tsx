@@ -79,7 +79,7 @@ export default function OnboardingGuide() {
       // 전환 UX 시작
       setIsTransitioning(true);
       setTimeout(() => {
-        router.push('/onboarding/chapter-1');
+        router.push('/onboarding');
       }, 1800);
     }
   };
@@ -325,8 +325,8 @@ export default function OnboardingGuide() {
                   <div
                     key={index}
                     className={`h-2.5 rounded-full transition-all duration-500 ${index === currentSlide
-                        ? 'w-10 bg-gradient-to-r from-cyan-500 to-purple-500 shadow-md shadow-blue-500/30'
-                        : 'w-2.5 bg-slate-300 hover:bg-slate-400 cursor-pointer'
+                      ? 'w-10 bg-gradient-to-r from-cyan-500 to-purple-500 shadow-md shadow-blue-500/30'
+                      : 'w-2.5 bg-slate-300 hover:bg-slate-400 cursor-pointer'
                       }`}
                     onClick={() => {
                       if (index !== currentSlide) {
