@@ -27,10 +27,10 @@ export function Step4CallContent({ onNext, onPrev, initialData }: StepProps<Call
   const form = useForm<any>({
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
-      askMeal: initialData?.askMeal ?? true,
-      askMedication: initialData?.askMedication ?? true,
-      askMood: initialData?.askMood ?? true,
-      askActivity: initialData?.askActivity ?? true,
+      askMeal: (initialData as any)?.askMeal ?? true,
+      askMedication: (initialData as any)?.askMedication ?? true,
+      askMood: (initialData as any)?.askMood ?? true,
+      askActivity: (initialData as any)?.askActivity ?? true,
       additionalQuestions: initialData?.additionalQuestions || '',
     },
   });
