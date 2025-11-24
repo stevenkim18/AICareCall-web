@@ -76,7 +76,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <OnboardingLayout>
+    <OnboardingLayout currentStep={currentStep}>
       <ProgressIndicator
         currentStep={currentStep}
         onStepClick={handleStepClick}

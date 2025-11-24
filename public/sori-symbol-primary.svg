@@ -1,0 +1,31 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle with Gradient -->
+  <defs>
+    <linearGradient id="sori-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333EA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main Circle -->
+  <circle cx="256" cy="256" r="220" fill="url(#sori-gradient)"/>
+  
+  <!-- Friendly Face -->
+  <!-- Left Eye -->
+  <circle cx="200" cy="220" r="20" fill="white"/>
+  <circle cx="205" cy="218" r="12" fill="#1F2937"/>
+  
+  <!-- Right Eye -->
+  <circle cx="312" cy="220" r="20" fill="white"/>
+  <circle cx="317" cy="218" r="12" fill="#1F2937"/>
+  
+  <!-- Smile -->
+  <path d="M 180 280 Q 256 340 332 280" stroke="white" stroke-width="16" fill="none" stroke-linecap="round"/>
+  
+  <!-- Sound Wave Accents -->
+  <path d="M 100 180 Q 90 200 100 220" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.6"/>
+  <path d="M 412 180 Q 422 200 412 220" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.6"/>
+  
+  <path d="M 70 160 Q 55 200 70 240" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <path d="M 442 160 Q 457 200 442 240" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.4"/>
+</svg>
