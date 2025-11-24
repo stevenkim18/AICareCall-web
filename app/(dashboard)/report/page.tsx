@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { LNB } from '@/app/components/LNB';
 import { SoriCharacter } from '@/app/components/custom/SoriCharacter';
+import { SidebarInset } from '@/components/ui/sidebar';
 
 export default function Report() {
   const [activeTab, setActiveTab] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
@@ -122,10 +123,9 @@ export default function Report() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <>
       <LNB />
-
-      <main className="flex-1 overflow-y-auto">
+      <SidebarInset className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-50 to-slate-100">
         {/* 헤더 */}
         <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm">
           <div className="px-8 py-5">
@@ -798,7 +798,7 @@ export default function Report() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+      </SidebarInset>
+    </>
   );
 }

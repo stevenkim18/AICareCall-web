@@ -1,16 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LNB } from '@/app/components/LNB';
 import { SoriCharacter } from '@/app/components/custom/SoriCharacter';
 import { NotificationCenter } from '@/app/components/custom/NotificationCenter';
 import { TimelineCallList } from '@/app/components/custom/TimelineCallList';
-import { CallDetailModal } from '@/app/components/custom/CallDetailModal';
+import { SidebarInset } from '@/components/ui/sidebar';
 
 export default function Dashboard() {
   const router = useRouter();
-  const [selectedCall, setSelectedCall] = useState<any>(null);
 
   // 실제 데이터 구조 (Mock)
   const summaryData = {
@@ -89,10 +87,10 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-slate-50/50">
+    <>
       <LNB />
 
-      <main className="flex-1 overflow-y-auto">
+      <SidebarInset className="flex-1 overflow-y-auto bg-slate-50/50">
         {/* Header */}
         <div className="bg-white/80 border-b border-slate-200 sticky top-0 z-40 backdrop-blur-xl shadow-sm">
           <div className="px-8 py-4 flex items-center justify-between w-full">
@@ -254,7 +252,7 @@ export default function Dashboard() {
                   </div>
 
                   <div className="mt-6">
-                    <TimelineCallList calls={recentCalls} onCallClick={setSelectedCall} />
+                    <TimelineCallList calls={recentCalls} onCallClick={(call) => router.push(`/call-history/${call.id}`)} />
                   </div>
                 </div>
               </div>
@@ -374,15 +372,7 @@ export default function Dashboard() {
           </div>
 
         </div>
-      </main>
-
-      {/* Call Detail Modal */}
-      <CallDetailModal
-        isOpen={selectedCall !== null}
-        onClose={() => setSelectedCall(null)}
-        call={selectedCall || recentCalls[0]}
-      />
-
-    </div>
+      </SidebarInset>
+    </>
   );
 }

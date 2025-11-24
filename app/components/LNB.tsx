@@ -3,6 +3,17 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { SoriLogo } from './SoriLogo';
 import { SoriCharacter } from './SoriCharacter';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/components/ui/sidebar';
 
 export function LNB() {
   const router = useRouter();
@@ -38,7 +49,8 @@ export function LNB() {
         </svg>
       ),
       path: '/chat',
-      soon: true
+      soon: true,
+      disabled: true
     },
     {
       id: 'report',
@@ -49,7 +61,8 @@ export function LNB() {
         </svg>
       ),
       path: '/report',
-      soon: true
+      soon: true,
+      disabled: true
     },
     {
       id: 'settings',
@@ -65,9 +78,9 @@ export function LNB() {
   ];
 
   return (
-    <aside className="w-64 bg-white border-r-2 border-slate-100 flex flex-col">
-      {/* Logo */}
-      <div className="p-6 border-b border-slate-100">
+    <Sidebar className="w-64 bg-white border-r-2 border-slate-100">
+      {/* Logo Header */}
+      <SidebarHeader className="p-6 border-b border-slate-100">
         <button
           onClick={() => router.push('/dashboard')}
           className="flex items-center gap-3 group"
@@ -75,45 +88,56 @@ export function LNB() {
           <SoriLogo size={36} />
           <span className="text-2xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">Sori AI</span>
         </button>
-      </div>
+      </SidebarHeader>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
-        {navItems.map((item) => {
-          const isActive = pathname === item.path || pathname?.startsWith(item.path + '/');
-          return (
-            <button
-              key={item.id}
-              onClick={() => router.push(item.path)}
-              className={`w-full flex items-center justify-between px-4 py-3 rounded-md transition-all duration-200 cursor-pointer ${isActive
-                ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-md'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                }`}
-            >
-              <div className="flex items-center gap-3">
-                {item.icon}
-                <span className="text-sm font-bold">{item.label}</span>
-              </div>
-              {item.soon && (
-                <span className="px-2 py-0.5 rounded bg-blue-500 text-white text-[10px] font-black uppercase">
-                  Soon
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </nav>
+      <SidebarContent className="flex-1 p-4">
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-2">
+              {navItems.map((item) => {
+                const isActive = pathname === item.path || pathname?.startsWith(item.path + '/');
+                return (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton
+                      onClick={() => !item.disabled && router.push(item.path)}
+                      className={`w-full flex items-center justify-between px-4 h-14 rounded-md transition-all duration-200 cursor-pointer ${isActive
+                          ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-md'
+                          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        } ${item.disabled ? 'opacity-60' : ''}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        {item.icon}
+                        <span className="text-sm font-bold">{item.label}</span>
+                      </div>
+                      {item.soon && (
+                        <span className="px-2 py-0.5 rounded bg-blue-500 text-white text-[10px] font-black uppercase">
+                          Soon
+                        </span>
+                      )}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent >
 
-      {/* Profile */}
-      <div className="p-6 border-t border-slate-100">
-        <div className="flex items-center gap-3 p-3 rounded-md bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-100">
-          <SoriCharacter size={40} animated />
+      {/* Profile Footer */}
+      < SidebarFooter className="p-6 border-t border-slate-100" >
+        <div className="flex items-center gap-3 p-3 rounded-md bg-slate-50 border border-slate-200">
+          <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
           <div className="flex-1">
             <div className="text-sm font-black text-slate-900">김보호 님</div>
             <div className="text-xs font-bold text-slate-600">보호자</div>
           </div>
         </div>
-      </div>
-    </aside>
+      </SidebarFooter >
+    </Sidebar >
   );
 }

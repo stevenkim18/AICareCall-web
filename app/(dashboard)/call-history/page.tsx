@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LNB } from '@/app/components/LNB';
-import { CallDetailModal } from '@/app/components/custom/CallDetailModal';
+import { SidebarInset } from '@/components/ui/sidebar';
 
 // Mock call data
 const callList = Array.from({ length: 25 }, (_, i) => {
@@ -62,20 +62,17 @@ function CallHistoryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
-  const [selectedCallId, setSelectedCallId] = useState<number | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const ITEMS_PER_PAGE = 10;
   const totalPages = Math.ceil(callList.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedCalls = callList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   const handlePageChange = (page: number) => router.push(`/call-history?page=${page}`);
-  const handleCallClick = (call: any) => { setSelectedCallId(call.id); setIsModalOpen(true); };
-  const selectedCall = callList.find(c => c.id === selectedCallId);
+  const handleCallClick = (call: any) => router.push(`/call-history/${call.id}`);
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <>
       <LNB />
-      <main className="flex-1 overflow-y-auto">
+      <SidebarInset className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-50 to-slate-100">
         <div className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
           <div className="px-8 py-6">
             <div className="flex items-center gap-4">
@@ -136,15 +133,14 @@ function CallHistoryContent() {
             </div>
           </div>
         </div>
-      </main>
-      {selectedCall && <CallDetailModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} call={selectedCall as any} />}
-    </div>
+      </SidebarInset>
+    </>
   );
 }
 
 export default function CallHistoryPage() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100"><LNB /><main className="flex-1 overflow-y-auto flex items-center justify-center"><div className="text-slate-600 text-lg font-semibold">로딩 중...</div></main></div>}>
+    <Suspense fallback={<><LNB /><SidebarInset className="flex-1 overflow-y-auto flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100"><div className="text-slate-600 text-lg font-semibold">로딩 중...</div></SidebarInset></>}>
       <CallHistoryContent />
     </Suspense>
   );
