@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import type { FirstStepProps, GuardianInfoData } from "@/types/onboarding";
 import { formatTimer } from "@/lib/onboarding-helpers";
+import { authApi } from "@/lib/api/auth";
+import { useUserStore } from "@/store/userStore";
 
 const formSchema = z.object({
   name: z
@@ -35,6 +37,10 @@ export function Step1GuardianInfo({ onNext }: FirstStepProps) {
   const [verificationAttempted, setVerificationAttempted] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [showEmailError, setShowEmailError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Zustand 전역 상태 사용
+  const { setUser, userId } = useUserStore();
 
   const form = useForm<GuardianInfoData>({
     resolver: zodResolver(formSchema),
@@ -76,31 +82,65 @@ export function Step1GuardianInfo({ onNext }: FirstStepProps) {
       form.setError("email", { message: "올바른 이메일 형식이 아닙니다" });
       return;
     }
-    console.log("인증번호 발송:", email);
-    setEmailSent(true);
-    setTimer(10 * 60);
-    setVerificationAttempted(false);
+
+    try {
+      setIsLoading(true);
+      // ✅ 실제 백엔드 API 호출!
+      const data = await authApi.requestCode(email);
+
+      if (data.success) {
+        setEmailSent(true);
+        setTimer(10 * 60);
+        setVerificationAttempted(false);
+      } else {
+        form.setError("email", { message: data.message });
+      }
+    } catch (error: any) {
+      form.setError("email", { message: error.message || "이메일 발송에 실패했습니다. 다시 시도해주세요." });
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleVerifyCode = async () => {
     const code = form.getValues("verificationCode");
+    const email = form.getValues("email");
+
     if (!code || code.length !== 6) {
       form.setError("verificationCode", { message: "6자리 인증번호를 입력해주세요" });
       return;
     }
-    console.log("인증번호 확인:", code);
-    if (code === "123456") {
-      setIsVerified(true);
-      setTimer(0);
-    } else {
+
+    try {
+      setIsLoading(true);
+      // ✅ 실제 백엔드 API 호출!
+      const data = await authApi.verifyCode(email, code);
+
+      if (data.success && data.user) {
+        setIsVerified(true);
+        // ✅ Zustand 전역 상태에 저장
+        setUser(data.user.id, email);
+        setTimer(0);
+      } else {
+        setVerificationAttempted(true);
+        form.setError("verificationCode", {
+          message: data.message || "인증번호가 일치하지 않습니다"
+        });
+      }
+    } catch (error) {
       setVerificationAttempted(true);
-      form.setError("verificationCode", { message: "인증번호가 일치하지 않습니다" });
+      form.setError("verificationCode", { message: "인증에 실패했습니다. 다시 시도해주세요." });
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const onSubmit = (data: GuardianInfoData) => {
-    if (!isVerified) return;
-    onNext(data);
+    if (!isVerified || !userId) return;
+    // userId를 함께 전달
+    onNext({ ...data, userId });
   };
 
   const canProceed = form.formState.isValid && isVerified;
