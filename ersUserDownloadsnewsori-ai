@@ -1,5 +1,0 @@
-* [33me36cdb2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdashboard-redesign-deploy[m[33m, [m[1;32mfeature/design-integration-3[m[33m)[m fix: remove all @apply directives for Tailwind v4 (issue #3)
-* [33m2fedd2a[m fix: resolve Tailwind v4 compatibility issues (issue #3)
-* [33m63bc702[m feat: add landing page and dashboard (issue #3)
-* [33m2c1ffd8[m feat: add custom components from backup (issue #3)
-* [33m01725d4[m feat: integrate custom design system with Tailwind v4 (issue #3)
