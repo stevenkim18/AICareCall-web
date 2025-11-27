@@ -8,6 +8,7 @@ import { NotificationCenter } from "@/app/components/custom/NotificationCenter";
 import { TimelineCallList } from "@/app/components/custom/TimelineCallList";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { dashboardApi, DashboardResponse } from "@/lib/api/dashboard";
+import { pushApi } from "@/lib/api/push";
 import {
   getAvgDurationDescription,
   getSuccessDescription,
@@ -61,6 +62,14 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // 테스트 전화 푸시 관련 상태
+  const [isPushLoading, setIsPushLoading] = useState(false);
+  const [pushToast, setPushToast] = useState<{
+    show: boolean;
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
   const highlightKeywords = (message: string, tags: string[]) => {
     if (!tags || tags.length === 0) return message;
     const limitedTags = tags.slice(0, 2);
@@ -93,6 +102,30 @@ export default function DashboardPage() {
     return result;
   };
 
+  const handleTestPush = async () => {
+    if (!elderId) return;
+
+    setIsPushLoading(true);
+    try {
+      await pushApi.sendVoipPush(elderId);
+      setPushToast({
+        show: true,
+        type: "success",
+        message: "테스트 전화 알림을 전송했습니다!",
+      });
+    } catch (error: any) {
+      setPushToast({
+        show: true,
+        type: "error",
+        message: error.message || "전화 알림 전송에 실패했습니다.",
+      });
+    } finally {
+      setIsPushLoading(false);
+      // 3초 후 토스트 자동 숨김
+      setTimeout(() => setPushToast(null), 3000);
+    }
+  };
+
   useEffect(() => {
     async function loadDashboard() {
       if (!elderId) {
@@ -118,6 +151,46 @@ export default function DashboardPage() {
   return (
     <>
       <LNB />
+
+      {/* 테스트 전화 알림 토스트 */}
+      {pushToast?.show && (
+        <div className="fixed top-4 right-4 z-50 animate-slide-in-right">
+          <div
+            className={`px-6 py-4 rounded-lg shadow-lg border-2 flex items-center gap-3 ${
+              pushToast.type === "success"
+                ? "bg-emerald-50 border-emerald-500 text-emerald-900"
+                : "bg-red-50 border-red-500 text-red-900"
+            }`}
+          >
+            {pushToast.type === "success" ? (
+              <svg
+                className="w-6 h-6 text-emerald-600"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="w-6 h-6 text-red-600"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
+            <span className="font-bold text-sm">{pushToast.message}</span>
+          </div>
+        </div>
+      )}
 
       <SidebarInset className="flex-1 overflow-y-auto bg-slate-50/50">
         {isLoading && (
@@ -220,6 +293,55 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
+                  {data && (
+                    <button
+                      onClick={handleTestPush}
+                      disabled={isPushLoading}
+                      className="flex items-center gap-2 px-4 py-2.5 bg-violet-600 hover:bg-violet-700 disabled:bg-slate-400 text-white text-sm font-bold rounded-lg transition-all shadow-sm hover:shadow-md disabled:cursor-not-allowed"
+                    >
+                      {isPushLoading ? (
+                        <>
+                          <svg
+                            className="animate-spin h-4 w-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            />
+                          </svg>
+                          <span>전송 중...</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                            />
+                          </svg>
+                          <span>테스트 전화</span>
+                        </>
+                      )}
+                    </button>
+                  )}
                   {false && <NotificationCenter />}
                 </div>
               </div>

@@ -120,7 +120,8 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+      Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -252,7 +253,13 @@
 
   .toss-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(148, 163, 184, 0.2) 20%, rgba(148, 163, 184, 0.2) 80%, transparent 100%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(148, 163, 184, 0.2) 20%,
+      rgba(148, 163, 184, 0.2) 80%,
+      transparent 100%
+    );
   }
 
   .ease-spring-quick {
@@ -287,6 +294,10 @@
     animation: slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
   .slide-out-left {
     animation: slide-out-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -317,7 +328,12 @@
   }
 
   .shimmer {
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 100%
+    );
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
   }
@@ -380,7 +396,6 @@
 }
 
 @keyframes gradient-flow {
-
   0%,
   100% {
     background-position: 0% 50%;
@@ -392,7 +407,6 @@
 }
 
 @keyframes breathing-orb {
-
   0%,
   100% {
     transform: scale(1);
@@ -408,7 +422,6 @@
 }
 
 @keyframes vibrating-wave {
-
   0%,
   100% {
     transform: scale(1);
@@ -420,14 +433,14 @@
 }
 
 @keyframes subtle-glow {
-
   0%,
   100% {
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
   }
 
   50% {
-    text-shadow: 0 0 16px rgba(255, 255, 255, 1), 0 0 20px rgba(196, 181, 253, 0.5);
+    text-shadow: 0 0 16px rgba(255, 255, 255, 1),
+      0 0 20px rgba(196, 181, 253, 0.5);
   }
 }
 
@@ -444,7 +457,6 @@
 }
 
 @keyframes gradient-shift {
-
   0%,
   100% {
     background-position: 0% 50%;
@@ -480,7 +492,6 @@
 }
 
 @keyframes float-up {
-
   0%,
   100% {
     transform: translateY(0);
@@ -505,7 +516,6 @@
 }
 
 @keyframes float-gentle {
-
   0%,
   100% {
     transform: translateY(0) translateX(0);
@@ -524,7 +534,6 @@
 }
 
 @keyframes toss-orb-float {
-
   0%,
   100% {
     transform: translate(0, 0) scale(1);
